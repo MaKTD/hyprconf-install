@@ -66,14 +66,6 @@ check_pkgman() {
         pkgman="pacman"
         echo "pkgman=$pkgman" >> "$pkgman_cache" 2>&1 | tee -a "$log"
 
-    elif command -v dnf &> /dev/null; then
-        pkgman="dnf"
-        echo "pkgman=$pkgman" >> "$pkgman_cache" 2>&1 | tee -a "$log"
-            
-    elif command -v zypper &> /dev/null; then
-        pkgman="zypper"
-        echo "pkgman=$pkgman" >> "$pkgman_cache" 2>&1 | tee -a "$log"
-
     else
         fn_exit "Sorry, the script won't work with your package manager for now..."
     fi
@@ -223,9 +215,6 @@ fi
 # ---------------- Installing hyprland and other packages
 "$scripts_dir/2-hyprland.sh" 2>&1 | tee -a >(sed 's/\x1B\[[0-9;]*[JKmsu]//g' >> "$log")
 
-if [[ "$pkgman" == "zypper" ]]; then # only for opensuse ( hyprsunset )
-    "$scripts_dir/2.1-hyprsunset.sh"
-fi
 
 "$scripts_dir/3-other_packages.sh" 2>&1 | tee -a >(sed 's/\x1B\[[0-9;]*[JKmsu]//g' >> "$log")
 "$scripts_dir/6-fonts.sh" 2>&1 | tee -a >(sed 's/\x1B\[[0-9;]*[JKmsu]//g' >> "$log")
@@ -334,46 +323,46 @@ sleep 1 && clear
 
 
 # setting up the keyboard leyout
-keyboardLayout=$(localectl status | grep "Keymap" | awk '{print $3}')
-msg att "Your current keyboard layout is set to '$keyboardLayout'"
-gum confirm "Is it ok for you?" \
-    --prompt.foreground "#ff8700" \
-    --affirmative "Yes! Set" \
-    --selected.background "#00FFFF" \
-    --selected.foreground "#000" \
-    --negative "No! Change"
+#keyboardLayout=$(localectl status | grep "Keymap" | awk '{print $3}')
+#msg att "Your current keyboard layout is set to '$keyboardLayout'"
+#gum confirm "Is it ok for you?" \
+#    --prompt.foreground "#ff8700" \
+#    --affirmative "Yes! Set" \
+#    --selected.background "#00FFFF" \
+#    --selected.foreground "#000" \
+#    --negative "No! Change"
 
-if [ $? -eq 1 ]; then
-    layout=$(localectl \
-        list-x11-keymap-layouts \
-        | gum filter \
-        --height 15 \
-        --prompt="<> " \
-        --cursor-text.foreground "#00FFFF" \
-        --indicator.foreground "#00FFFF" \
-        --placeholder "Search keyboard layout..."
-    )
-else
-    layout="$keyboardLayout"
-fi
-
-msg att "Selected Layout: $layout"
+#if [ $? -eq 1 ]; then
+#    layout=$(localectl \
+#        list-x11-keymap-layouts \
+#        | gum filter \
+#        --height 15 \
+#        --prompt="<> " \
+#        --cursor-text.foreground "#00FFFF" \
+#        --indicator.foreground "#00FFFF" \
+#        --placeholder "Search keyboard layout..."
+#    )
+#else
+#    layout="$keyboardLayout"
+#fi
+#
+#msg att "Selected Layout: $layout"
 
 # Apply changes to Hyprland config
-if [[ -d "$HOME/.config/hypr/confs" ]]; then        # for hyprconf-v2
-    kbd_config="$HOME/.config/hypr/confs/settings.conf"
-elif [[ -d "$HOME/.config/hypr/configs" ]]; then    # for hyprconf
-    kbd_config="$HOME/.config/hypr/configs/settings.conf"
-fi
+#if [[ -d "$HOME/.config/hypr/confs" ]]; then        # for hyprconf-v2
+#    kbd_config="$HOME/.config/hypr/confs/settings.conf"
+#elif [[ -d "$HOME/.config/hypr/configs" ]]; then    # for hyprconf
+#    kbd_config="$HOME/.config/hypr/configs/settings.conf"
+#fi
 
-sed -i "s/kb_layout = .*/kb_layout = $layout/g" "$kbd_config"
+#sed -i "s/kb_layout = .*/kb_layout = $layout/g" "$kbd_config"
 # sed -i "s/kb_variant = .*/kb_variant = $variant/g" "$kbd_config"
 
-echo
-
-msg dn "Setting up the keyboard layout was successful.."
-
-sleep 1 && clear
+#echo
+#
+#msg dn "Setting up the keyboard layout was successful.."
+#
+#sleep 1 && clear
 
 # ----------------- check if laptop or not
 if [[ -d "/sys/class/power_supply/BAT0" ]]; then

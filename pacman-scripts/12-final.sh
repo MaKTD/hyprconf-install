@@ -105,7 +105,7 @@ checkup=(
     qt5-graphicaleffects
     qt5-quickcontrols2
     ripgrep
-    rofi-wayland
+    rofi
     # swappy
     satty
     swaync

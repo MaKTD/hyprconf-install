@@ -66,10 +66,15 @@ fi
 fonts=(
     ttf-font-awesome
     ttf-cascadia-code-nerd
+    ttf-jetbrains-mono
     ttf-jetbrains-mono-nerd
     ttf-meslo-nerd
     noto-fonts
     noto-fonts-emoji
+    ttf-fira-code
+    ttf-firacode-nerd
+    ttf-clear-sans
+    ttf-roboto
 )
 
 # checking already installed packages 

@@ -14,13 +14,13 @@ orange="\e[1;38;5;214m"
 end="\e[1;0m"
 
 display_text() {
-    gum style \
-        --border rounded \
-        --align center \
-        --width 60 \
-        --margin "1" \
-        --padding "1" \
-'
+  gum style \
+    --border rounded \
+    --align center \
+    --width 60 \
+    --margin "1" \
+    --padding "1" \
+    '
    ___       __  ____ __      
   / _ \___  / /_/ _(_) /__ ___
  / // / _ \/ __/ _/ / / -_|_-<
@@ -45,7 +45,7 @@ mkdir -p "$log_dir"
 touch "$log"
 
 # hyprconf repo url
-url="https://github.com/shell-ninja/hyprconf-v2/archive/refs/heads/main.zip"
+url="https://github.com/MaKTD/hyprconf-v2/archive/refs/heads/main.zip"
 target_dir="$parent_dir/.cache/hyprconf-v2"
 zip_path="$target_dir.zip"
 
@@ -57,13 +57,12 @@ curl -L "$url" -o "$zip_path"
 # ---------------------- new ---------------------- #
 # Extract only if download succeeded
 if [[ -f "$zip_path" ]]; then
-    mkdir -p "$target_dir"
-    unzip "$zip_path" "hyprconf-v2-main/*" -d "$target_dir" > /dev/null
-    mv "$target_dir/hyprconf-v2-main/"* "$target_dir" && rmdir "$target_dir/hyprconf-v2-main"
-    rm "$zip_path"
+  mkdir -p "$target_dir"
+  unzip "$zip_path" "hyprconf-v2-main/*" -d "$target_dir" >/dev/null
+  mv "$target_dir/hyprconf-v2-main/"* "$target_dir" && rmdir "$target_dir/hyprconf-v2-main"
+  rm "$zip_path"
 fi
 # ---------------------- new ---------------------- #
-
 
 # ---------------------- old ---------------------- #
 # Clone the repository and log the output
@@ -77,17 +76,23 @@ sleep 1
 
 # if repo clonned successfully, then setting up the config
 if [[ -d "$parent_dir/.cache/hyprconf-v2" ]]; then
-  cd "$parent_dir/.cache/hyprconf-v2" || { msg err "Could not changed directory to $parent_dir/.cache/hyprconf-v2" 2>&1 | tee -a >(sed 's/\x1B\[[0-9;]*[JKmsu]//g' >> "$log"); exit 1; }
+  cd "$parent_dir/.cache/hyprconf-v2" || {
+    msg err "Could not changed directory to $parent_dir/.cache/hyprconf-v2" 2>&1 | tee -a >(sed 's/\x1B\[[0-9;]*[JKmsu]//g' >>"$log")
+    exit 1
+  }
 
   chmod +x hyprconf-v2.sh
-  
-  ./hyprconf-v2.sh || { msg err "Could not run the setup script for hyprconf-v2." 2>&1 | tee -a >(sed 's/\x1B\[[0-9;]*[JKmsu]//g' >> "$log"); exit 1; }
+
+  ./hyprconf-v2.sh || {
+    msg err "Could not run the setup script for hyprconf-v2." 2>&1 | tee -a >(sed 's/\x1B\[[0-9;]*[JKmsu]//g' >>"$log")
+    exit 1
+  }
 fi
 
 if [[ -f "$HOME/.config/hypr/scripts/startup.sh" ]]; then
-  msg dn "Dotfiles setup was successful..." 2>&1 | tee -a >(sed 's/\x1B\[[0-9;]*[JKmsu]//g' >> "$log")
+  msg dn "Dotfiles setup was successful..." 2>&1 | tee -a >(sed 's/\x1B\[[0-9;]*[JKmsu]//g' >>"$log")
 else
-  msg err "Could not setup dotfiles.." 2>&1 | tee -a >(sed 's/\x1B\[[0-9;]*[JKmsu]//g' >> "$log")
+  msg err "Could not setup dotfiles.." 2>&1 | tee -a >(sed 's/\x1B\[[0-9;]*[JKmsu]//g' >>"$log")
   exit 1
 fi
 
