@@ -129,7 +129,7 @@ aur_packages=(
     hyprsunset
     hyprland-qtutils
     tty-clock
-    pyprland
+    #pyprland
     wlogout
 )
 

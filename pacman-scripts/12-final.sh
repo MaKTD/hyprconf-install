@@ -94,7 +94,7 @@ checkup=(
     power-profiles-daemon
     python-pywal
     python-gobject
-    pyprland
+    #pyprland
     qt5ct
     qt5-svg
     qt6ct-kde
